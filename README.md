@@ -1,2 +1,2 @@
 # Jenkins
-Repo for jenkinsfiles
+jenkinsfile for build hit count app
