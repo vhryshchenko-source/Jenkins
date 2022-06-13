@@ -69,14 +69,13 @@ pipeline {
             }
         }
         stage('SonarQube analysis') {
-          def scannerHome = tool 'SonarQube-scanner-4.7';
           steps {
             // def scannerHome = tool 'SonarQube-scanner-4.7';
             withSonarQubeEnv('sonarqube') {
-              sh "${scannerHome}/bin/sonar-scanner"
-              // -D sonar.projectName=test \
-              // -D sonar.projectKey=test \
-              // -D sonar.sources=."
+              sh "${scannerHome}/bin/sonar-scanner \
+              -Dsonar.projectName=test \
+              -Dsonar.projectKey=test \
+              -Dsonar.sources=."
             }
           }
         }
