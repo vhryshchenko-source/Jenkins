@@ -69,14 +69,15 @@ pipeline {
             }
         }
         stage('SonarQube analysis') {
-          def scannerHome = tool 'SonarQube-scanner-4.7'
           steps {
-            // def scannerHome = tool 'SonarQube-scanner-4.7'
+            script {
+              scannerHome = tool 'SonarQube-scanner-4.7'
+            }
             withSonarQubeEnv('sonarqube') {
-              sh "${scannerHome}/bin/sonar-scanner \
-              -Dsonar.projectName=test \
-              -Dsonar.projectKey=test \
-              -Dsonar.sources=."
+              sh "${scannerHome}/bin/sonar-scanner"
+              // -Dsonar.projectName=test \
+              // -Dsonar.projectKey=test \
+              // -Dsonar.sources=."
             }
           }
         }
@@ -190,9 +191,9 @@ pipeline {
             }
         }
     }
-    post {
-        failure {
-            slackSend failOnError: true, message: "Build failed  - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
-        }
-    }
+    // post {
+    //     failure {
+    //         slackSend failOnError: true, message: "Build failed  - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+    //     }
+    // }
 }
