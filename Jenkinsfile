@@ -74,10 +74,10 @@ pipeline {
               scannerHome = tool 'SonarQube-scanner-4.7'
             }
             withSonarQubeEnv('sonarqube') {
-              sh "${scannerHome}/bin/sonar-scanner"
-              // -Dsonar.projectName=test \
-              // -Dsonar.projectKey=test \
-              // -Dsonar.sources=."
+              sh "${scannerHome}/bin/sonar-scanner \
+              -Dsonar.projectName=test \
+              -Dsonar.projectKey=test \
+              -Dsonar.sources=."
             }
           }
         }
