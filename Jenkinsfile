@@ -69,23 +69,25 @@ pipeline {
             }
         }
         stage('SonarQube analysis') {
-          def scannerHome = tool 'SonarQube-scanner-4.7';
-          withSonarQubeEnv('sonarqube') {
-            sh "${scannerHome}/bin/sonar-scanner \
-            -D sonar.projectName=test \
-            -D sonar.projectKey=test \
-            -D sonar.sources=."
-          }
-        }
-        stage('Quality Gates'){
-            
-          timeout(time: 1, unit: 'HOURS') {
-          def qg = waitForQualityGate() 
-          if (qg.status != 'OK') {
-            error "Pipeline aborted due to quality gate failure: ${qg.status}"
+          steps {
+            def scannerHome = tool 'SonarQube-scanner-4.7';
+            withSonarQubeEnv('sonarqube') {
+              sh "${scannerHome}/bin/sonar-scanner \
+              -D sonar.projectName=test \
+              -D sonar.projectKey=test \
+              -D sonar.sources=."
             }
           }
         }
+        // stage('Quality Gates'){
+            
+        //   timeout(time: 1, unit: 'HOURS') {
+        //   def qg = waitForQualityGate() 
+        //   if (qg.status != 'OK') {
+        //     error "Pipeline aborted due to quality gate failure: ${qg.status}"
+        //     }
+        //   }
+        // }
         stage('Build image') {
           when {
             expression {
