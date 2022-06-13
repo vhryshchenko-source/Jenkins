@@ -73,7 +73,7 @@ pipeline {
           withSonarQubeEnv('sonarqube') {
             sonar.projectName=test
             sonar.projectKey=test
-            sonar.sources=.
+            sonar.sources=./
             // sh "${scannerHome}/bin/sonar-scanner \
             // -D sonar.login=admin \
             // -D sonar.password=admin \
