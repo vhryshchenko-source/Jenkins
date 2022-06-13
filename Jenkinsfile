@@ -69,6 +69,7 @@ pipeline {
             }
         }
         stage('SonarQube analysis') {
+          def scannerHome = tool 'SonarQube-scanner-4.7';
           steps {
             // def scannerHome = tool 'SonarQube-scanner-4.7';
             withSonarQubeEnv('sonarqube') {
