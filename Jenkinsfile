@@ -68,7 +68,29 @@ pipeline {
                 )
             }
         }
-
+        stage('SonarQube analysis') {
+          def scannerHome = tool 'SonarQube-scanner-4.7';
+          withSonarQubeEnv('sonarqube') {
+            sonar.projectName=test
+            sonar.projectKey=test
+            sonar.sources=.
+            // sh "${scannerHome}/bin/sonar-scanner \
+            // -D sonar.login=admin \
+            // -D sonar.password=admin \
+            // -D sonar.projectKey=sonarqubetest3 \
+            // -D sonar.exclusions=vendor/**,resources/**,**/*.java \
+            // -D sonar.host.url=http://192.168.1XX.XXX:9000/"
+          }
+        }
+        stage('Quality Gates'){
+            
+          timeout(time: 1, unit: 'HOURS') {
+          def qg = waitForQualityGate() 
+          if (qg.status != 'OK') {
+            error "Pipeline aborted due to quality gate failure: ${qg.status}"
+            }
+          }
+        }
         stage('Build image') {
           when {
             expression {
