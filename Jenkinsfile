@@ -2,7 +2,6 @@ pipeline {
   agent { label "${AGENT_LABEL}" }
 
   environment {
-    //DOCKERHUB_CREDENTIAL = credentials('docker-hub-credentials')
     DOCKERHUB_USER = credentials('docker-hub-username')
     DOCKERHUB_TOKEN = credentials('docker-hub-token')
   }
@@ -77,8 +76,8 @@ pipeline {
             }
             withSonarQubeEnv('sonarqube') {
               sh "${scannerHome}/bin/sonar-scanner \
-              -Dsonar.projectName=test \
-              -Dsonar.projectKey=test \
+              -Dsonar.projectName=hit-count \
+              -Dsonar.projectKey=hit-count \
               -Dsonar.sources=./hits"
             }
           }
@@ -122,7 +121,6 @@ pipeline {
         stage('Docker hub login') {
           steps{
             container('docker') {
-              // sh 'echo $DOCKERHUB_CREDENTIAL_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin'
               sh 'echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USER --password-stdin'
             }   
           }
@@ -197,9 +195,9 @@ pipeline {
             }
         }
     }
-    // post {
-    //     failure {
-    //         slackSend failOnError: true, message: "Build failed  - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
-    //     }
-    // }
+    post {
+        failure {
+            slackSend failOnError: true, message: "Build failed  - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+        }
+    }
 }
