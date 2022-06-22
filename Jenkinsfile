@@ -78,7 +78,6 @@ pipeline {
               sh "${scannerHome}/bin/sonar-scanner \
               -Dsonar.projectName=hit-count \
               -Dsonar.projectKey=hit-count \
-              -Dsonar.sources=./hits"
             }
           }
         }
