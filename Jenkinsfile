@@ -77,7 +77,7 @@ pipeline {
             withSonarQubeEnv('sonarqube') {
               sh "${scannerHome}/bin/sonar-scanner \
               -Dsonar.projectName=hit-count \
-              -Dsonar.projectKey=hit-count \
+              -Dsonar.projectKey=hit-count
             }
           }
         }
